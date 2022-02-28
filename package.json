@@ -1,0 +1,33 @@
+{
+  "name": "amIGonnaBooIt",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/gtm": "^2.4.0",
+    "@nuxtjs/style-resources": "^1.2.1",
+    "axios": "^0.26.0",
+    "core-js": "^3.19.3",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
+    "nuxt": "^2.15.8",
+    "vue": "^2.6.14",
+    "vue-server-renderer": "^2.6.14",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^4.46.0"
+  },
+  "devDependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.0.0",
+    "@fortawesome/free-solid-svg-icons": "^6.0.0",
+    "@nuxtjs/fontawesome": "^1.1.2",
+    "pug": "^3.0.2",
+    "pug-plain-loader": "^1.1.0",
+    "sass": "^1.49.8",
+    "sass-loader": "10"
+  }
+}
