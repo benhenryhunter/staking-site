@@ -46,6 +46,7 @@ export default {
   data: () => ({
     loading: true,
     stats: {},
+    alreadyMinted: 0,
     gonnaMakeIt: false,
     rows: [],
     headers: ['# of Ghosts', '# of Stakers', 'Days Until Mint'],
@@ -70,11 +71,15 @@ export default {
       } catch(err){
         console.log(err);
       }
+    },
+    async getAllAOrigins() {
+      const res = await axios.get("https://staking-api.guanaco.dev/totalOrigins");
+      this.alreadyMinted = res?.data?.data        
     }
   },
   async mounted() {
-    await this.fetchStats()
-    this.gonnaMakeIt = this.stats?.mintsBeforeDay120 < 4116
+    await Promise.all([this.fetchStats(),this.getAllAOrigins()])
+    this.gonnaMakeIt = (this.stats?.mintsBeforeDay120 + this.alreadyMinted) < 4116
   }
 }
 </script>
