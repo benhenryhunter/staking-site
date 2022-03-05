@@ -1,9 +1,11 @@
 <template>
   <div class="main">
+    <Banner />
+    <div class="container"></div>
     <Header/>
     <div v-if="!loading" class="content">
       <div  class="maybeGonnaMakeIt" >
-        <div>If you want to make it you need to start staking {{totalNeededToMint ? totalNeededToMint : "more than 100 ghosts"}}</div>
+        <div>If you want to make it you need to start staking {{totalNeededToMint ? totalNeededToMint : "more than 100"}} ghosts</div>
         <!-- <div>If you start today by staking only 1 Ethereal...</div>
         <div :class="{notGonnaMakeIt: !gonnaMakeIt, gonnaMakeIt}">YOU'RE {{gonnaMakeIt ? "GONNA MAKE IT!" : 'not gonna make it.'}}</div>
         <div><span v-if="!gonnaMakeIt" class="minimumStaking">Stake at least {{minimum}} ghosts to get an origin</span></div> -->
@@ -37,6 +39,7 @@
 </template>
 
 <script>
+import Banner from "../components/banner.vue"
 import Header from "../components/header.vue"
 import Counts from "../components/counts.vue"
 import Spinner from "../components/spinner.vue"
@@ -58,7 +61,8 @@ export default {
     Counts,
     Spinner,
     Table,
-    Header
+    Header,
+    Banner
   },
   methods: {
     async fetchStats() {
@@ -79,10 +83,9 @@ export default {
       this.alreadyMinted = res?.data?.data        
     },
     async totalToMakeIt() {
+      await this.fetchStats()
       const res1 = await axios.get(`${process.env.API_URL}/totalOrigins`);
       this.alreadyMinted = res1?.data?.data        
-      const res = await axios.get(`${process.env.API_URL}/stats`);
-      this.stats = res?.data?.data
       for(var i = 2; i < 100; i++) {
         const totalMints = this.stats.totals.reduce((sum, ele) => ele.daysTilMint < (Math.ceil(120/i)) ? sum+ele.holders*(Math.ceil((Math.ceil(120/i))/ele.daysTilMint)) : sum, 0)
         if (totalMints + this.alreadyMinted < 4000) {
@@ -101,69 +104,64 @@ export default {
 </script>
 
 <style lang="scss">
-
-
-  .main {
-    // max-width: 60vw;
+.main {
+  // max-width: 60vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  min-height: 100vh;
+  .header {
+    font-weight: bold;
+    font-size: 36px;
+    // white-space: nowrap;
+  }
+  .maybeGonnaMakeIt {
     display: flex;
+    font-weight: bold;
+    font-size: 36px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    margin-top:10vh;
-    .header {
+  }
+  .gonnaMakeIt {
+    margin-top: 15px;
+    background-color: $green;
+    padding: 3px 10px;
+    border-radius: 5px;
+  }
+  .notGonnaMakeIt {
+    margin-top: 15px;
+    background-color: $orange;
+    padding: 3px 10px;
+    border-radius: 5px;
+  }
+  .stats {
+    margin-top: 30px;
+  }
+
+  .table {
+    margin-top: 30px;
+    .title {
       font-weight: bold;
-      font-size:36px;
-      // white-space: nowrap;  
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+  }
+  .footer {
+    margin-top: 10px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .main {
+    .header {
+      font-size: 24px;
     }
     .maybeGonnaMakeIt {
-      display: flex;
-      font-weight: bold;
-      font-size: 36px;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .gonnaMakeIt {
-      margin-top: 15px;
-      background-color: $green;
-      padding: 3px 10px;
-      border-radius: 5px;
-    }
-    .notGonnaMakeIt {
-      margin-top: 15px;
-      background-color: $orange;
-      padding: 3px 10px;
-      border-radius: 5px;
-    }
-    .stats {
-      margin-top: 30px;
-    }
-    
-    .table {
-      margin-top: 30px;
-      .title {
-        font-weight: bold;
-        margin-bottom: 10px;
-        font-size: 18px;
-      }
-    }
-    .footer {
-      margin-top: 10px;
+      font-size: 18px;
     }
   }
-
-  @media only screen and (max-width: 500px) {
-    .main {
-
-      .header {
-        font-size: 24px;
-      }
-      .maybeGonnaMakeIt {
-        font-size: 18px;
-      }
-    }
-  }
-
-
+}
 </style>

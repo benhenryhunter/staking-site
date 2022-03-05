@@ -30,15 +30,17 @@
 
 
 
-$darkGray: #11151c;
+$darkGray: #ad2d6b;
 $gray: #212d40;
-$lightGray: #364156;
+$lightGray: linear-gradient( 135deg, #000000,
+#640633);
 $burntOrange: #7d4e57;
-$orange: #d66853;
+$orange: #ad2d6b;
 $green: #04a03b;
+$pink: #000000;
 
-body, html {
-    background-color: $lightGray !important;
+body {
+    background: $lightGray !important;
   }
 
   * {

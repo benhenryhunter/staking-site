@@ -1,5 +1,7 @@
 <template>
   <div class="verify">
+    <Banner/>
+    <div class="container"></div>
     <Header/>
     <div class="metamask-btn" @click="getAddresses">
         Verify With Metamask
@@ -73,6 +75,6 @@ export default {
         justify-content: center;
         align-items: center;
         margin: auto;
-        margin-top:10vh;
+        min-height: 100vh;
     }
 </style>
