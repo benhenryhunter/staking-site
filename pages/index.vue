@@ -6,8 +6,8 @@
         <div>If you want to make it you need to start staking {{totalNeededToMint ? totalNeededToMint : "more than 100 ghosts"}}</div>
         <!-- <div>If you start today by staking only 1 Ethereal...</div>
         <div :class="{notGonnaMakeIt: !gonnaMakeIt, gonnaMakeIt}">YOU'RE {{gonnaMakeIt ? "GONNA MAKE IT!" : 'not gonna make it.'}}</div>
-        <div><span v-if="!gonnaMakeIt" class="minimumStaking">Stake at least {{minimum}} ghosts to get an origin</span></div>
-        <div><a href="/amigonnamakeit">But are you gonna make it?</a></div> -->
+        <div><span v-if="!gonnaMakeIt" class="minimumStaking">Stake at least {{minimum}} ghosts to get an origin</span></div> -->
+        <div><a href="/amigonnamakeit">But are you gonna make it?</a></div>
       </div>
       <div class="stats">
         <Counts

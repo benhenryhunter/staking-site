@@ -34,7 +34,7 @@ export default {
             } else {
                 if(res.data?.data?.staking) {
                     alert("Thanks for connecting!  Check Discord!")
-                    window.location = "/amigonnamakeit?address="+address
+                    window.location = "/amigonnamakeit/?address="+address
                 } else {
                     alert("Looks like the address you connected isn't staking any origins")
                 }
