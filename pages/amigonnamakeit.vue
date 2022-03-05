@@ -53,10 +53,8 @@ export default {
                 return
             }
             this.loading = true;
-            const res = await axios.get(`https://staking-api.guanaco.dev/stats/${this.address}`);
-            const res2 = await axios.get(`https://staking-api.guanaco.dev/stats`);
-            // const res = await axios.get(`http://localhost:8080/stats/${this.address}`);
-            // const res2 = await axios.get(`http://localhost:8080/stats`);
+            const res = await axios.get(`${process.env.API_URL}/stats/${this.address}`);
+            const res2 = await axios.get(`${process.env.API_URL}/stats`);
             this.loading = false;
             const totalboo = (res.data.data.stats.claimedBoo + res.data.data.stats.unclaimedBoo).toFixed(2);
             var daysTilMint;
@@ -85,6 +83,13 @@ export default {
     computed: {
         shareLink() {
             return `🎉🎉I'm going to get an @Etherealswtf Origin🎉🎉%0a%0a👻- ${this.stats.totalGhostsStaked} Ghosts Staked%0a💰- ${this.stats.claimed + this.stats.claimable} $boo bucks earned%0a📅- ${this.stats.daysUntilMint} days until I can mint%0a%0aAre you gonna make it? Find out here https://guanaco.dev/amigonnamakeit`
+        }
+    },
+    mounted () {
+        console.log(this.$route)
+        if(this.$route?.query?.address) {
+            this.address = this.$route?.query?.address;
+            this.checkAddress()
         }
     }
 }

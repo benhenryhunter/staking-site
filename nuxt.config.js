@@ -3,6 +3,10 @@ export default {
   telemetry: false,
   mode: 'universal',
   ssr: true,
+  env: {
+    // API_URL: "http://localhost:8080",
+    API_URL: "https://staking-api.guanaco.dev",
+  },
 
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',

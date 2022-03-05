@@ -3,10 +3,11 @@
     <Header/>
     <div v-if="!loading" class="content">
       <div  class="maybeGonnaMakeIt" >
-        <div>If you start today by staking only 1 Ethereal...</div>
+        <div>If you want to make it you need to start staking {{totalNeededToMint ? totalNeededToMint : "more than 100 ghosts"}}</div>
+        <!-- <div>If you start today by staking only 1 Ethereal...</div>
         <div :class="{notGonnaMakeIt: !gonnaMakeIt, gonnaMakeIt}">YOU'RE {{gonnaMakeIt ? "GONNA MAKE IT!" : 'not gonna make it.'}}</div>
         <div><span v-if="!gonnaMakeIt" class="minimumStaking">Stake at least {{minimum}} ghosts to get an origin</span></div>
-        <div><a href="/amigonnamakeit">But are you gonna make it?</a></div>
+        <div><a href="/amigonnamakeit">But are you gonna make it?</a></div> -->
       </div>
       <div class="stats">
         <Counts
@@ -48,6 +49,7 @@ export default {
     stats: {},
     alreadyMinted: 0,
     gonnaMakeIt: false,
+    totalNeededToMint: null,
     rows: [],
     headers: ['# of Ghosts', '# of Stakers', 'Days Until Mint'],
     keys: ['ghosts', 'holders', 'daysTilMint'],
@@ -61,7 +63,7 @@ export default {
   methods: {
     async fetchStats() {
       try {
-        const res = await axios.get("https://staking-api.guanaco.dev/stats");
+        const res = await axios.get(`${process.env.API_URL}/stats`);
         this.stats = res?.data?.data
 
         
@@ -73,13 +75,27 @@ export default {
       }
     },
     async getAllAOrigins() {
-      const res = await axios.get("https://staking-api.guanaco.dev/totalOrigins");
+      const res = await axios.get(`${process.env.API_URL}/totalOrigins`);
       this.alreadyMinted = res?.data?.data        
+    },
+    async totalToMakeIt() {
+      const res1 = await axios.get(`${process.env.API_URL}/totalOrigins`);
+      this.alreadyMinted = res1?.data?.data        
+      const res = await axios.get(`${process.env.API_URL}/stats`);
+      this.stats = res?.data?.data
+      for(var i = 2; i < 100; i++) {
+        const totalMints = this.stats.totals.reduce((sum, ele) => ele.daysTilMint < (Math.ceil(120/i)) ? sum+ele.holders*(Math.ceil((Math.ceil(120/i))/ele.daysTilMint)) : sum, 0)
+        if (totalMints + this.alreadyMinted < 4000) {
+          this.totalNeededToMint = i;
+          break;
+        }
+      }
+      this.loading = false;
     }
   },
   async mounted() {
-    await Promise.all([this.fetchStats(),this.getAllAOrigins()])
-    this.gonnaMakeIt = (this.stats?.mintsBeforeDay120 + this.alreadyMinted) < 4116
+    await Promise.all([this.totalToMakeIt()])
+    // this.gonnaMakeIt = (this.stats?.mintsBeforeDay120 + this.alreadyMinted) < 4116
   }
 }
 </script>
